@@ -1,7 +1,7 @@
 
-#SpringBoot项目构建
+# SpringBoot项目构建
 
-###在项目中使用SpringBoot
+### 在项目中使用SpringBoot
 
  Spring官方发布的每一个SpringBoot版本下都会提供一个版本依赖目录，在实际项目中引入即可使用Spring官方做好的版本在maven中引入spring-boot-starter-parent作为顶级项目，spring-boot-starter-parent中为springboot项目规定一些项目构建的变量，以2.0.3.RELEASE版本为例，spring-boot-starter-parent-2.0.3.RELEASE.pom 中定义变量：
  
@@ -82,7 +82,7 @@ public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySourc
 
 用于监听Application生命周期。
 
-####web类型检测
+###  web类型检测
 
 ``` java
 private WebApplicationType deduceWebApplicationType() {   
@@ -104,14 +104,15 @@ private WebApplicationType deduceWebApplicationType() {
 默认情况下则是一个 SERVLET 的环境 (标准的web环境，基于JDK servlet)
 
 
-####初始化协助对象创建setInitializers((Collection) 
+### 初始化协助对象创建setInitializers((Collection) 
 >getSpringFactoriesInstances(ApplicationContextInitializer.class));
 
 在创建这些协助对象的时候会通过 `getSpringFactoriesInstances()` 方法获取boot项目的初始化协助对象。
 ``` java
 private <T> Collection<T> getSpringFactoriesInstances(Class<T> type,      Class<?>[] parameterTypes, Object... args) {   
 	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();   
-	// Use names and ensure unique to protect against duplicates   Set<String> names = new LinkedHashSet<>(         SpringFactoriesLoader.loadFactoryNames(type, classLoader));   
+	// Use names and ensure unique to protect against duplicates   
+	Set<String> names = new LinkedHashSet<>(SpringFactoriesLoader.loadFactoryNames(type, classLoader));   
 	List<T> instances = createSpringFactoriesInstances(type, parameterTypes,classLoader, args, names);   
 	AnnotationAwareOrderComparator.sort(instances);   
 	return instances;
@@ -151,7 +152,7 @@ META-INF这个目录下的spring.factories是Spring-boot项目必须要包含的
 在Spring-boot包中的META-INF/spring.factories 定义了以下配置信息
 
 
-><font face="黑体" color="#A72550">#PropertySource Loaders  (属性配置加载器)</font>
+><font face="黑体" color="#A72550"># PropertySource Loaders  (属性配置加载器)</font>
 org.springframework.boot.env.PropertySourceLoader
 <font face="黑体" color="#A72550"># Run Listeners   (运行监听者)</font>
 org.springframework.boot.SpringApplicationRunListener
@@ -173,7 +174,8 @@ sorg.springframework.boot.diagnostics.FailureAnalyzer
 \org.springframework.boot.context.ContextIdApplicationContextInitializer,
 \org.springframework.boot.context.config.DelegatingApplicationContextInitializer,
 \org.springframework.boot.web.context.ServerPortInfoApplicationContextInitializer</td></tr></table>
-+ ConfigurationWarningsApplicationContextInitializer
+
++ ConfigurationWarningsApplicationContextInitialize
 + ContextIdApplicationContextInitializer
 + DelegatingApplicationContextInitializer
 + ServerPortInfoApplicationContextInitializer
@@ -181,21 +183,22 @@ sorg.springframework.boot.diagnostics.FailureAnalyzer
 
 这些ApplicationContextInitializer中`DelegatingApplicationContextInitializer`是留给对Srping扩展的一个预留接口。通过`context.initializer.classes`属性可以自定义项目中需要用到的 ApplicationContextInitializer ，DelegatingApplicationContextInitializer 会加载定义的 ApplicationContextInitializer 来执行一定的逻辑，有兴趣可以自行了解其过程。
 
-#### 设置事件监听器setListeners((Collection) 
+###  设置事件监听器setListeners((Collection) 
 同样的，在设置事件监听器时候是获取spring.factories中配置的 ApplicationListener 对象
-	>1. ClearCachesApplicationListener
-	>2. ParentContextCloserApplicationListener
-	>3. FileEncodingApplicationListener
-	>4. AnsiOutputApplicationListener
-	>5. ConfigFileApplicationListener
-	>6. DelegatingApplicationListener
-	>7. ClasspathLoggingApplicationListener
-	>8. LoggingApplicationListener
-	>9. LiquibaseServiceLocatorApplicationListener
+
+	1. ClearCachesApplicationListener
+	2. ParentContextCloserApplicationListener
+	3. FileEncodingApplicationListener
+	4. AnsiOutputApplicationListener
+	5. ConfigFileApplicationListener
+	6. DelegatingApplicationListener
+	7. ClasspathLoggingApplicationListener
+	8. LoggingApplicationListener
+	9. LiquibaseServiceLocatorApplicationListener
 
 这些监听器在整个boot工程启动的过程中都会参与到其中。现在我们还是看回 SpringApplication 的 run 方法中，boot工程所有的启动流程都包含在这里。
 
-####run()方法启动工程
+### run()方法启动工程
 在创建完SpringApplicsation之后，亦即对boot工程有了一个抽象的表达对象，会调用SpringApplicsation的`run()`方法来启动整个Spring-boot工程。
 ```java
 /** Run the Spring application, creating and refreshing a new
@@ -245,7 +248,7 @@ Spring-boot工程的启动流程，大致可以归纳为4个步骤主要流程�
 	3. 创建刷新应用上下文(ApplicationContext)。完成所有bean的配装，这下回到了Spring核心内容。
 	4. 完成boot工程启动，广播启动完成的事件。
 
-####初始化SpringApplicationRunListeners
+### 初始化SpringApplicationRunListeners
 
 `SpringApplicationRunListeners` 是`SpringApplicationRunListener`的集合对象(加了一个s)，先来看看SpringApplicationRunListener是一个什么样的监听器。
 
@@ -324,7 +327,7 @@ public void starting() {
 ApplicationListener目前 SpringApplication 初始化的事件各个 ApplicationListener ，这里不详细介绍全部，只挑一些关键的ApplicationListener 。
 当 SpringApplication 的初始化的广播事件广播完成之后，就会开始着手准备 SpringApplication 的运行环境。
 
-#### SpringApplication的environment环境对象创建与配置
+### SpringApplication的environment环境对象创建与配置
 
 SpringApplication环境创建和配置都在prepareEnvironment方法中，这个Environment环境变量代表着Spring-boot工程的运行环境，主要包括一些运行参数和配置的属性参数。
 
@@ -405,7 +408,7 @@ protected void customizePropertySources(MutablePropertySources propertySources) 
 ```
 值得一提，StandardServletEnvironment是继承StandardEnvironment类的，所以如果是一个 StandardServletEnvironment 的环境也会加载 系统属性 (system properties) 和 系统环境变量(system environment variables) 到属性集中，StandardServletEnvironment 则是额外再添加了 SERVLET 的上下文属性和 SERVLET 的配置属性。到此环境创建完毕。    
 
-#### 环境配置
+### 环境配置
 ```java
 protected void configureEnvironment(ConfigurableEnvironment environment,      String[] args) {   
 	configurePropertySources(environment, args);  configureProfiles(environment, args);}
@@ -457,7 +460,7 @@ protected void configureProfiles(ConfigurableEnvironment environment, String[] a
 }
 ```
 如上所示，在注释中已经大致说明了configureProfiles的过程，就是加载 spring.profiles.active 属性指定的 profiles 文件，spring.profiles.active就是在实际开发中用于指定不同环境下使用哪个属性配置文件的一个属性。在代码中是通过`environment.getActiveProfiles()`来激活指定的属性文件profiles，并且会额外增加属性文件Set<String> profiles = new LinkedHashSet<>(this.additionalProfiles);这个额外文件是留给boot的扩展时使用，比如说在spring-cloud启动的时候就会把cloud自己的Profiles写到 spring-cloud的应用启动引导对象中，而最终Profiles文件中定义的属性最后会一并合并到主环境的 SpringApplication 的中。配置Environment环境的属性集到这里已经完成，因为Environment实际上是Spring-boot工程的环境的一个抽象，所以Environment中配置的属性最后都会在SpringApplication中应用到。
-####环境配置完成事件传播
+### 环境配置完成事件传播
 在环境创建完成和对环境配置完成之后，就会通知注册到SpringApplication的监听器，广播一个环境创建完成事件 `ApplicationEnvironmentPreparedEvent`代表环境配置完成，而在这个过程中事件广播器和事件接收器都是与 SpringApplication 开始创建事件的广播器和事件接收器一样。
 ```java
 //环境配置完成事件传播代码
@@ -504,7 +507,7 @@ loadPostProcessorsList<EnvironmentPostProcessor> loadPostProcessors() {
 
 `SpringApplicationJsonEnvironmentPostProcessor`主要是对JSON格式的配置做解析，`SystemEnvironmentPropertySourceEnvironmentPostProcessor`这个处理器的作用是对环境中的操作系统环境变量作一个修正。不多做分析，有兴趣可以细读这些Processor的postProcessEnvironment方法。在环境事件传播完成之后环境的建立就基本完成。
 
-####创建ApplicationContext
+### 创建ApplicationContext
 
 在环境的建立完成之后就可以创建Spring的应用上下文ApplicationContext， 
 ```java
@@ -585,7 +588,7 @@ protected void postProcessApplicationContext(ConfigurableApplicationContext cont
 ```
 postProcessApplicationContext方法会注册一个默认的beanNameGenerator名字生成器，这个名字生成器只有在我们定义Bean的时候没有给定bean的名字才用得上，此时会根据一定的策略来生成一个默认的名字。第二个则是添加一个resourceLoader资源加载器，是用于加载Spring相关资源的组件，比如application.properties。
 
-####初始化上下文
+### 初始化上下文
 ```java
 protected void applyInitializers(ConfigurableApplicationContext context) {   	
 	for (ApplicationContextInitializer initializer : getInitializers()) {      
@@ -605,11 +608,11 @@ ApplicationContextInitializer# Application Context Initializersorg.springframewo
 
 单纯的spring-boot工程使用到的ApplicationContextInitializer并没有太多的处理过程，DelegatingApplicationContextInitializer这个名字或多或少有点印象，这个以`Delegating-`开头的类都是预留给用户去扩展的接口，这里`DelegatingApplicationContextInitializer`会读取环境的配置属性context.initializer.classes设置的实现了ApplicationContextInitializer的类，`ApplicationContextInitializer`接口只有一个`initialize`方法，会以创建好的`ApplicationContext`作为入参。
 
-####contextPrepared事件传播
+### contextPrepared事件传播
 
 在众多的`ApplicationContextInitializer`对Spring应用上下文`ApplicationContext`做完修改之后会广播一个应用上下文创建完成的事件，这个事件目前并没有做太多处理是一个空方法，暂时应该是做预留的一个方法。
 
-####加载资源 <a id="load"></a>
+### 加载资源 <a id="load"></a>
 
 回到prepareContext方法中，prepareContext方法的末端都有
 ```java
@@ -629,12 +632,13 @@ listeners.contextLoaded(context);
 
 如果是一个XML文件，那么会把XML中定义的bean全部注册到ApplicationContext中。
 
-####刷新上下文
+### 刷新上下文
 
 上下文刷新是正式启动Spring容器的一步 ，`AnnotationConfigServletWebServerApplicationContext`是SERVLET环境下的ApplicationContext实例对象，简单阅读该类的创建过程。
 ![Alt text](./AnnotationConfigServletWebServerApplicationContext.png)
 
 通过上面的类图可以看出`AnnotationConfigServletWebServerApplicationContext`使用了许多接口去修饰，这里列出一些关键的接口和父类及其无参构造方法，因为创建AnnotationConfigServletWebServerApplicationContext上下文是通过无参方法实例化的：
+
 	>1. `AbstractApplicationContext`：AbstractApplicationContext中主要是提供一些对BeanFactory管理的方法和消息传播相关的方法，AbstractApplicationContext还实现了ResourceLoader所以还会提供资源解析相关的方法，AbstractApplicationContext当中最重要的还是refresh()方法，refresh方法决定了Spring核心的启动流程。而AbstractApplicationContext的无参构造方法只是生成了一个默认的资源解析器ResourcePatternResolver。
 	>2. `GenericApplicationContext`：GenericApplicationContext提供了更多的BeanDefinition的管理方法，BeanDefinition是bean在Spring中的抽象定义。GenericApplicationContext的无参构造方法只是创建一个DefaultListableBeanFactory。
 	>3. `GenericWebApplicationContext`：GenericWebApplicationContext是在  GenericApplicationContext 的基础上增加了对ServletContext的支持。
@@ -659,7 +663,7 @@ listeners.contextLoaded(context);
 在应用上下文ApplicationContext应用BeanFactoryPostProcessor后置处理器时，由于实现了BeanDefinitionRegistryPostProcessors(BeanFactoryPostProcessor子类)的`ConfigurationClassPostProcessor`会被优先执行，BeanDefinitionRegistryPostProcessors接口会在ApplicationContext刷新时调用其postProcessBeanDefinitionRegistry方法，在ConfigurationClassPostProcessor这个后置处理器中会通过ConfigurationClassParser对在ApplicationContext中所有注解了`@Configuration`的类进行处理。如果注解了`@Configuration`的类同时还注解了`@Import`、`@ComponentScan`、`@ImportResource`、`@Bean`会一一解析并且实现这些注解对应的功能。
 >我们经常使用的starter就是通过这种途径来实现自动配置。
 
-####ApplicationContext刷新完成后处理
+### ApplicationContext刷新完成后处理
 回到SpringApplication的run方法中，走到这里相信Spring-boot已经启动起来了，剩下的都是一些后续的工作。
 
 ```java
@@ -691,7 +695,7 @@ private void callRunners(ApplicationContext context, ApplicationArguments args) 
 ```
 这里是获取ApplicationContext中实现了ApplicationRunner或者CommandLineRunner接口的bean。这两个接口都只需要实现一个run方法，在Spring-boot项目启动完成之后，就会执行。
 
-####后记
+### 后记
 Spring-boot给我的感觉是对Spring的更高一层的抽象封装，利用Spring预留的众多扩展接口对Spring进行无代码入侵的扩展，使用起来Spring-boot就像是一个Spring应用一样，其中并没有很多新的技术融合到Spring-boot中，对实现简化配置的实现方法简单明了，只要在对应的starter项目中配置META-INF/spring.factories文件引入对应的类即可以实现自动配置。
 
 在以前使用Spring-boot的时候并没有太多关注开箱即用的实现过程，只是觉得用起来很方便，在研究了Spring-cloud之后发现毕竟是基于Spring-boot的，研究源码的时候就顺便看了一眼，大概弄懂来龙去脉，也积累一点点代码阅读量，技术债迟早要还的。
