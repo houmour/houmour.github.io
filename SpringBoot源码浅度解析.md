@@ -40,7 +40,7 @@ spring-boot-starter-parent具体的依赖声明在其父级项目spring-boot-dep
 </build>
 ```
 
-###Springboot启动创建  
+### Springboot启动创建  
 Spring-boot通常是以SpringApplication.run()的方式去启动一个Spring-boot的项目。
 `run()` 方法中新建了一个 `SpringApplication` 对象。
 
